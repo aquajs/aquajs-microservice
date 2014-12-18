@@ -24,7 +24,7 @@ module.exports = {
     apiServer: 'true',
     //Batch process server
     batchProcessServer: 'false',
-    enableWaterline:'false',
+    enableWaterline:'true',
     enablePersist:'false'
 
 };

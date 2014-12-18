@@ -9,14 +9,14 @@ var {{ controllerName }} = require( path.join(dirPaths.controllersDir,'{{ contro
     app.post('{{ apiMethod.path }}',  {{ controllerName }}.{{ operation.nickname }});
     {%- endif -%}
     {%- if operation.httpMethod |upper == 'PUT'  -%}
-    app.put('{{apiMethod.path}}/:id', {{ controllerName }}.{{ operation.nickname }});
+    app.put('{{apiMethod.path}}', {{ controllerName }}.{{ operation.nickname }});
     {%- endif -%}
     {%- if operation.httpMethod |upper == 'DELETE'  -%}
-    app.delete('{{apiMethod.path}}/:id',{{ controllerName }}.{{ operation.nickname }});
-    {%- endif -
+    app.delete('{{apiMethod.path}}',{{ controllerName }}.{{ operation.nickname }});
+    {%- endif -%}
 
 {%- endfor -%}
 {%- endfor -%}
-}
+};
 module.exports = {{ routerName }};
 
