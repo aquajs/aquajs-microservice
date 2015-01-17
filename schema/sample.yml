@@ -128,8 +128,8 @@ models:
 - OrderAdd:
     id: OrderAdd
     properties:
-      orderId:
-        type: String
+      id:
+        type: int
       orderName:
         type: String
 - Pizza:

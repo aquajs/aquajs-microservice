@@ -15,9 +15,9 @@ module.exports = {
   // The name of the MongoDB collection to store sessions in
   sessionCollection: 'usersession',
   //API Server flag
-  apiServer: 'true',
+  apiServer: true,
   //Batch process server
-  batchProcessServer: 'false',
+  batchProcessServer: false,
   enableWaterline: true,
   enablePersist: false
 
