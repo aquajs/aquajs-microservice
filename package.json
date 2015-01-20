@@ -16,19 +16,15 @@
   "dependencies": {
     "aquajs": "*",
     "aquajs-logger": "*",
-    "aquajs-swagger-ui": "*",
     "async": "*",
     "compression": "*",
     "express": "*",
     "express-validator": "^2.7.0",
     "lodash": "latest",
-    "mailgun-js": "^0.6.7",
     "persist": "*",
     "rekuire": "^0.1.9",
-    "sails-mongo": "*",
-    "swig": "^1.4.2",
     "waterline": "*",
-    "winston": "*"
+    "sails-mongo":"latest"
   },
   "devDependencies": {
     "chai": "latest",
