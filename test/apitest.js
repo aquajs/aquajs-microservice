@@ -87,6 +87,20 @@ describe('order tests', function() {
       });
   });
 
+  it ('should get all orders', function(done) {
+
+    var url = baseurl + '/orders';
+
+    hippie()
+      .json()
+      .get(url)
+      .end(function (err, res) {
+        if (err) return done(err);
+        console.log(res.body);
+        done();
+      });
+  });
+
   it ('should delete the order', function(done) {
 
     var data = {
