@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "poststart": "grunt coverage",
-    "test": "grunt test",
+    "test": "mocha -R spec test/apitest.js",
     "httptest": "mocha -R spec test/test.js",
     "clean": "rm -f controllers/* impls/* routes/* models/* && rm -rf tests"
   },
