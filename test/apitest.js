@@ -6,15 +6,14 @@ var baseurl = 'http://localhost';
 var hippie = require('hippie');
 
 
-before(function (done) {
-  this.timeout(15 * 1000);
-  startApp(function(err, server) {
-    if (err) return done(err);
-    baseurl += ':' + server.address().port;
-    done();
-  });
-});
-
+//before(function (done) {
+//  this.timeout(15 * 1000);
+//  startApp(function(err, server) {
+//    if (err) return done(err);
+//    baseurl += ':' + server.address().port;
+//    done();
+//  });
+//});
 
 describe('order tests', function() {
 
@@ -32,7 +31,8 @@ describe('order tests', function() {
 
     hippie()
       .json()
-      .post(url)
+      .post('http://localhost:8090/orders')
+      //.post(url)
       .send(data)
       .end(function(err, res) {
         if (err) return done(err);
@@ -45,21 +45,18 @@ describe('order tests', function() {
   it ('should get the new order', function(done) {
 
     var data = {
-      "id": 100,
-      "order_name": "bbq",
-      "order_contents": "bbq chicken pizza",
-      "quantity": 1,
-      "order_status": "in progress"
+      "id": 100
     };
 
     var url = baseurl + '/orders/' + data.id;
 
     hippie()
       .json()
-      .get(url)
-      .end(function(err, res, body) {
+      .get('http://localhost:8090/orders/100')
+      //.get(url)
+      .end(function(err, res) {
         if (err) return done(err);
-        console.log(body);
+        console.log(res.body);
         done();
       });
   });
@@ -68,8 +65,8 @@ describe('order tests', function() {
 
     var data = {
       "id": 100,
-      "order_name": "bbq",
-      "order_contents": "bbq chicken pizza",
+      "order_name": "pepperoni",
+      "order_contents": "pepperoni pizza",
       "quantity": 1,
       "order_status": "in progress"
     };
@@ -78,7 +75,8 @@ describe('order tests', function() {
 
     hippie()
       .json()
-      .put(url)
+      .put('http://localhost:8090/orders/100')
+      //.put(url)
       .send(data)
       .end(function (err, res) {
         if (err) return done(err);
@@ -93,7 +91,8 @@ describe('order tests', function() {
 
     hippie()
       .json()
-      .get(url)
+      .get('http://localhost:8090/orders')
+      //.get(url)
       .end(function (err, res) {
         if (err) return done(err);
         console.log(res.body);
@@ -104,18 +103,15 @@ describe('order tests', function() {
   it ('should delete the order', function(done) {
 
     var data = {
-      "id": 100,
-      "order_name": "bbq",
-      "order_contents": "bbq chicken pizza",
-      "quantity": 2,
-      "order_status": "in progress"
+      "id": 100
     };
 
     var url = baseurl + '/orders/' + data.id;
 
     hippie()
       .json()
-      .del(url)
+      .del('http://localhost:8090/orders/100')
+      //.del(url)
       .end(function (err, res) {
         if (err) return done(err);
         console.log(res.body);
