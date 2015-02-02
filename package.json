@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "poststart": "grunt coverage",
-    "test": "grunt test",
+    "test": "mocha -R spec test/apitest.js",
     "httptest": "mocha -R spec test/test.js",
     "clean": "rm -f controllers/* impls/* routes/* models/* && rm -rf tests"
   },
@@ -34,8 +34,10 @@
   "devDependencies": {
     "grunt-mocha-istanbul": "^2.1.0",
     "grunt-mocha-test": "^0.12.1",
+    "hippie": "*",
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
+    "mongodb": "^1.4.29",
     "request": "^2.49.0"
   },
   "publishConfig": {
