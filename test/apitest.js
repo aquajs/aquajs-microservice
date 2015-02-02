@@ -3,11 +3,10 @@ var request = require('request');
 var util = require('util');
 var async = require('async');
 var baseurl = 'http://localhost';
-var open = require('open');
 var hippie = require('hippie');
 var MongoClient = require('mongodb').MongoClient;
 var mongoUrl = 'mongodb://localhost:27017/ramp',
-  _db;
+    _db;
 
 
 before(function (done) {
