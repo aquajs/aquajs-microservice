@@ -37,6 +37,7 @@
     "hippie": "*",
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
+    "mongodb": "^1.4.29",
     "request": "^2.49.0"
   },
   "publishConfig": {

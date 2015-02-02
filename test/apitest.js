@@ -3,23 +3,41 @@ var request = require('request');
 var util = require('util');
 var async = require('async');
 var baseurl = 'http://localhost';
+var open = require('open');
 var hippie = require('hippie');
+var MongoClient = require('mongodb').MongoClient;
+var mongoUrl = 'mongodb://localhost:27017/ramp',
+  _db;
 
 
-//before(function (done) {
-//  this.timeout(15 * 1000);
-//  startApp(function(err, server) {
-//    if (err) return done(err);
-//    baseurl += ':' + server.address().port;
-//    done();
-//  });
-//});
+before(function (done) {
+  MongoClient.connect(mongoUrl, function(err, db) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('connected to mongo');
+      _db = db;
+      this.timeout(15 * 1000);
+      startApp(function (err, server) {
+        if (err) return done(err);
+        baseurl += ':' + server.address().port;
+        done();
+      });
+    }
+  }.bind(this));
+});
 
 describe('order tests', function() {
+
+  it ('should request apidocs', function(done) {
+    var url = baseurl + '/apidoc';
+    request(url);
+  });
 
   it ('should create a new order', function(done) {
 
     var url = baseurl + '/orders';
+    var collection = _db.collection('orders');
 
     var data = {
       "id": 100,
@@ -31,15 +49,18 @@ describe('order tests', function() {
 
     hippie()
       .json()
-      .post('http://localhost:8090/orders')
-      //.post(url)
+      //.post('http://localhost:8090/orders')
+      .post(url)
       .send(data)
       .end(function(err, res) {
         if (err) return done(err);
-        console.log(res.body);
-        done();
+        collection.findOne({_id: data.id.toString()}, function(err, result) {
+          if (err) return done(err);
+          var body = JSON.parse(res.body);
+          assert.equal(body.id, result._id);
+          done();
+        })
       });
-
   });
 
   it ('should get the new order', function(done) {
@@ -49,15 +70,20 @@ describe('order tests', function() {
     };
 
     var url = baseurl + '/orders/' + data.id;
+    var collection = _db.collection('orders');
 
     hippie()
       .json()
-      .get('http://localhost:8090/orders/100')
-      //.get(url)
+      //.get('http://localhost:8090/orders/100')
+      .get(url)
       .end(function(err, res) {
         if (err) return done(err);
-        console.log(res.body);
-        done();
+        collection.findOne({_id: data.id.toString()}, function(err, result) {
+          if (err) return done(err);
+          var body = JSON.parse(res.body);
+          assert.equal(body[0].id, result._id);
+          done();
+        })
       });
   });
 
@@ -72,31 +98,47 @@ describe('order tests', function() {
     };
 
     var url = baseurl + '/orders/' + data.id;
+    var collection = _db.collection('orders');
+
 
     hippie()
       .json()
-      .put('http://localhost:8090/orders/100')
-      //.put(url)
+      //.put('http://localhost:8090/orders/100')
+      .put(url)
       .send(data)
       .end(function (err, res) {
         if (err) return done(err);
-        console.log(res.body);
-        done();
+        collection.findOne({_id: data.id.toString()}, function(err, result) {
+          if (err) return done(err);
+          var body = JSON.parse(res.body);
+          assert.equal(body[0].order_name, result.order_name);
+          assert.equal(body[0].order_contents, result.order_contents);
+          done();
+        })
       });
   });
 
   it ('should get all orders', function(done) {
 
     var url = baseurl + '/orders';
+    var collection = _db.collection('orders');
 
     hippie()
       .json()
-      .get('http://localhost:8090/orders')
-      //.get(url)
+      //.get('http://localhost:8090/orders')
+      .get(url)
       .end(function (err, res) {
         if (err) return done(err);
-        console.log(res.body);
-        done();
+        var orders = JSON.parse(res.body);
+        collection.find({}).toArray(function(err, result) {
+          if (err) return done(err);
+          result.forEach(function(entry) {
+            orders.forEach(function(order) {
+              assert.equal(order.id, entry._id);
+            });
+          });
+          done();
+        })
       });
   });
 
@@ -107,15 +149,19 @@ describe('order tests', function() {
     };
 
     var url = baseurl + '/orders/' + data.id;
+    var collection = _db.collection('orders');
 
     hippie()
       .json()
-      .del('http://localhost:8090/orders/100')
-      //.del(url)
+      //.del('http://localhost:8090/orders/100')
+      .del(url)
       .end(function (err, res) {
         if (err) return done(err);
-        console.log(res.body);
-        done();
+        collection.findOne({_id: data.id.toString()}, function(err, result) {
+          if (err) return done(err);
+          assert(result === null);
+          done();
+        })
       });
   });
 });
