@@ -40,13 +40,24 @@ var persistConf = {
   }
 };
 
+var mailerConfig = {
+  "transport": {
+    "service": process.env.MAIL_SERVICE || "Gmail",
+    "auth": {
+      "user": process.env.MAILER_ADDRESS || "",
+      "pass": process.env.MAILER_PASS || ""
+    }
+  }
+};
+
 module.exports = {
     app: {
-        name: 'aqua',
-		loadModel : true,
-        logconfpath: path.join($dirPaths.configDir, 'env/log_config.json'),
-        schedulerconfpath: path.join($dirPaths.configDir, 'env/scheduler-conf.json'),
-        ormList:['waterline','persist'],
-        dbConfList:[wDBConf,persistConf]
+      name: 'aqua',
+      loadModel : true,
+      logconfpath: path.join($dirPaths.configDir, 'env/log_config.json'),
+      schedulerconfpath: path.join($dirPaths.configDir, 'env/scheduler-conf.json'),
+      ormList:['waterline','persist'],
+      dbConfList:[wDBConf,persistConf],
+      mailerConfig: mailerConfig
     }
 };
