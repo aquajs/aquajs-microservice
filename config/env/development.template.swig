@@ -61,11 +61,11 @@ var config = {
 
 module.exports = {
   app: {
-    name: 'aqua',
+    name: '{{projectName}}',
     loadModel: true,
     logconfpath: path.join($dirPaths.configDir, 'env/log_config.json'),
     schedulerconfpath: path.join($dirPaths.configDir, 'env/scheduler-conf.json'),
     ormList: ['waterline', 'persist', 'testConn'],
-    dbConfList: [wDBConf, persistConf, config]
+    dbConfList: [wDBConf, persistConf , config]
   }
 };
