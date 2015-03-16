@@ -7,11 +7,13 @@
  *
  */
 var path = require('path');
+//var
 
 var wDBConf = {
   adapters: {
     'default': require('sails-mongo'),
-    mongo: require('sails-mongo')
+    mongo: require('sails-mongo'),
+    oracle: require('aquajs-oracle')
   },
   connections: {
     mongo: {
@@ -20,6 +22,13 @@ var wDBConf = {
       host: process.env.HOST || 'localhost',
       port: process.env.PORT || 27017,
       database: 'ramp'
+    },
+    oracle: {
+      adapter: 'oracle',
+      module: 'aquajs-oracle',
+      host: process.env.HOST || 'eceedevdb01.sv2.corp.equinix.com',
+      port: process.env.PORT || 1521,
+      database: 'ECEEDEV1'
     }
   }
 };
@@ -39,14 +48,24 @@ var persistConf = {
     "idleTimeoutMillis": 30000
   }
 };
+var config = {
+  name: 'testConn',
+  log: true,
+  max: 10,
+  hostname: 'eceedevdb01.sv2.corp.equinix.com',
+  user: 'ecee_int',
+  password: 'welcome1',
+  port: '1521',
+  database: 'ECEEDEV1'
+};
 
 module.exports = {
   app: {
-    name: '{{projectName}}',
+    name: 'aqua',
     loadModel: true,
     logconfpath: path.join($dirPaths.configDir, 'env/log_config.json'),
     schedulerconfpath: path.join($dirPaths.configDir, 'env/scheduler-conf.json'),
-    ormList: ['waterline', 'persist'],
-    dbConfList: [wDBConf, persistConf]
+    ormList: ['waterline', 'persist', 'testConn'],
+    dbConfList: [wDBConf, persistConf, config]
   }
 };
